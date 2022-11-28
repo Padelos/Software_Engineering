@@ -1,7 +1,7 @@
 import React, { useState }  from "react";
 import "./index.css";
 import Footer from "./components/Footer";
-import Navbar from "./components/Navbar";
+import OurNavbar from "./components/OurNavbar";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import PrivateRoute from "./utils/PrivateRoute";
 import { AuthProvider } from "./context/AuthContext";
@@ -10,14 +10,16 @@ import Login from "./views/loginPage";
 import Register from "./views/registerPage";
 import ProtectedPage from "./views/ProtectedPage";
 
-import Example from "./components/Example"
+//import Example from "./components/Example"
+import ContactForm from "./components/ContactForm";
 function App() {
+  
   const [value, onChange] = useState(new Date());
   return (
     <Router>
       <div className="flex flex-col min-h-screen overflow-hidden">
         <AuthProvider>
-          <Navbar />
+          <OurNavbar />
           <Switch>
             <PrivateRoute component={ProtectedPage} path="/protected" exact />
             <Route component={Login} path="/login" />
@@ -26,6 +28,7 @@ function App() {
           </Switch>
           
         </AuthProvider>
+        
         <Footer />
         
       </div>
