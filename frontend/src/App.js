@@ -6,6 +6,8 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import PrivateRoute from "./utils/PrivateRoute";
 import { AuthProvider } from "./context/AuthContext";
 import Home from "./views/homePage";
+import Pricing from "./views/pricingPage";
+import About from "./views/aboutPage";
 import Login from "./views/loginPage";
 import Register from "./views/registerPage";
 import ProtectedPage from "./views/ProtectedPage";
@@ -24,6 +26,8 @@ function App() {
             <PrivateRoute component={ProtectedPage} path="/protected" exact />
             <Route component={Login} path="/login" />
             <Route component={Register} path="/register" />
+            <Route component={Pricing} path="/pricing" />
+            <Route component={About} path="/about" />
             <Route component={Home} path="/" />
           </Switch>
           
