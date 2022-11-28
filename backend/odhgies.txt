@@ -1,0 +1,15 @@
+1.Setting up backend Django server.
+    Now cdinto backend. 
+    cd backend
+2.Create and activate a virtual environment
+⁣python -m venv venv
+source ./venv/bin/activate
+
+3.Install Django & create project
+python -m pip install Django
+pip install djangorestframework django-cors-headers==3.11.0 djangorestframework-simplejwt==5.0.0 PyJWT==2.3.0
+⁣pip freeze > requirements.txt or if it doesn’t work, try, pip freeze -> requirements.txt
+
+
+4.Run django server 
+python manage.py runserver
