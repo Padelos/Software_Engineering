@@ -25,12 +25,12 @@ print(requests.get("http://localhost:8000/api/reservations/1", headers=headers).
 
 
 print('CHECK BOOKING OF RESERVATION FOR PARKING SPOT 1: /api/reservations/book')
-obj = {'parkingId':'2','startDate':'18/12/2022','endDate':'19/12/2022'}
+obj = {'parkingId':'1','startDate':'31/12/2022','endDate':'01/01/2023'}
 print(requests.post("http://localhost:8000/api/reservations/book/", headers=headers,json=obj).json())
 
 
-#print('CHECK RESERVATIONS')
-#print(requests.get("http://localhost:8000/api/reservations/", headers=headers).json())
+print('CHECK RESERVATIONS: /api/reservations/')
+print(requests.get("http://localhost:8000/api/reservations/", headers=headers).json())
 
 
 
@@ -42,8 +42,8 @@ print(requests.get("http://localhost:8000/api/spots/", headers=headers).json())
 print("CHECK ALL USER RESERVATIONS: /api/reservations")
 print(requests.get("http://localhost:8000/api/reservations/", headers=headers).json())
 
-print("DELETING RESERVATION: /api/reservations/delete/")
-print(requests.delete("http://localhost:8000/api/reservations/delete/3", headers=headers).json())
+#print("DELETING RESERVATION: /api/reservations/delete/")
+#print(requests.delete("http://localhost:8000/api/reservations/delete/3", headers=headers).json())
 
 
 ###Days testing algorithm

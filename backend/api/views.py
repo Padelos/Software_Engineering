@@ -175,7 +175,7 @@ Books reservation
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def bookReservation(request):
-    today = timezone.now()
+    today = timezone.now().date()
     
     parkingSpotId = request.data['parkingId']
     try:
@@ -185,8 +185,9 @@ def bookReservation(request):
     except(ValueError, TypeError):
         return JsonResponse({"error":"Dates must be in format DD/MM/YYYY"})
     
-    if startDate > endDate:
+    if startDate >= endDate or (startDate < today) or (endDate < today):
         return JsonResponse({"error":"Invalid start and end date."})
+
     reservations = Reservation.objects.filter(parkingSpot=parkingSpotId).filter(Q(endDate__gte=today)).all()
     for reservation in reservations:
         #Check to see if there is any reservation associated with parking spot whose dates overlap with new reservation date
