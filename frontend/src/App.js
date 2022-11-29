@@ -28,7 +28,7 @@ function App() {
             <Route component={Register} path="/register" />
             <Route component={Pricing} path="/pricing" />
             <Route component={About} path="/about" />
-            <Route component={Home} path="/" />
+            <Route exact component={Home} path="/" />
           </Switch>
           
         </AuthProvider>

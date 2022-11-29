@@ -1,17 +1,44 @@
 import { useContext } from "react";
+import { useHistory } from 'react-router-dom';
 import AuthContext from "../context/AuthContext";
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+
+
 
 const LoginPage = () => {
+  const history = useHistory();
   const { loginUser } = useContext(AuthContext);
   const handleSubmit = e => {
     e.preventDefault();
     const username = e.target.username.value;
     const password = e.target.password.value;
     username.length > 0 && loginUser(username, password);
+    history('/');
   };
 
   return (
-    <section>
+   
+      <Form onSubmit={handleSubmit}>
+      <Form.Group controlId="username" className="mb-3" >
+        <Form.Label >Username</Form.Label>
+        <Form.Control type="text" placeholder="Enter username" />
+      </Form.Group>
+
+      <Form.Group className="mb-3" controlId="password">
+        <Form.Label>Password</Form.Label>
+        <Form.Control type="password" placeholder="Password" />
+      </Form.Group>
+      <Button variant="primary" type="submit">
+        Submit
+      </Button>
+    </Form>
+     
+  );
+};
+/**
+ * OLD
+<section>
       <form onSubmit={handleSubmit}>
         <h1>Login </h1>
         <hr />
@@ -22,7 +49,5 @@ const LoginPage = () => {
         <button type="submit">Login</button>
       </form>
     </section>
-  );
-};
-
+ */
 export default LoginPage;

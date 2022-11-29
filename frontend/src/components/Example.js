@@ -82,7 +82,7 @@ const Example = ({props, datesChangeFunction}) => {
       selectsDisabledDaysInRange
       inline 
       withPortal
-        
+      minDate={new Date()}
         />
     );
     

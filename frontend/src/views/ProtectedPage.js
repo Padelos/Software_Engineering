@@ -101,7 +101,7 @@ function ProtectedPage() {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-            Close
+            Cancel
           </Button>
           <Button disabled={buttonDisabled}  variant="primary" onClick={handleClose}>
             Book
