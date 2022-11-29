@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import { useHistory } from 'react-router-dom';
 import AuthContext from "../context/AuthContext";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -7,14 +6,13 @@ import Form from 'react-bootstrap/Form';
 
 
 const LoginPage = () => {
-  const history = useHistory();
   const { loginUser } = useContext(AuthContext);
   const handleSubmit = e => {
     e.preventDefault();
     const username = e.target.username.value;
     const password = e.target.password.value;
     username.length > 0 && loginUser(username, password);
-    history('/');
+    
   };
 
   return (
