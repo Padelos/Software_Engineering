@@ -52,7 +52,7 @@ class CurrentUserSerializer(serializers.ModelSerializer):
 class ParkingSpotSerializer(serializers.ModelSerializer):
     class Meta:
         model = ParkingSpot
-        fields = ('id','occupied',)
+        fields = ('id','occupied','parkingSpotType')
 
 
 
@@ -73,4 +73,4 @@ class ParkingSpotReservationsSerializer(serializers.ModelSerializer):
     reservations = ReservationSerializerNoSpots(read_only=True,many=True)
     class Meta:
         model = ParkingSpot
-        fields = ('id','occupied','reservations',)
+        fields = ('id','occupied','reservations','parkingSpotType')
