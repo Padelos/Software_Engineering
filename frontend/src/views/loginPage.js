@@ -33,7 +33,7 @@ const LoginPage = () => {
         Submit
       </Button>
       <Form.Group className="mb-3 text-center">
-      Don't you have an account? <a href="/register">Register here</a>
+      Don't have an account? <a href="/register">Register here!</a>
       </Form.Group>
      
     </Form>

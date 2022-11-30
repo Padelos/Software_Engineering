@@ -1,0 +1,15 @@
+.about-content{
+    margin: auto;
+    height: 50%;
+    width: 50%;
+}
+
+.note{
+    float: right;
+    font-size: 12px;
+}
+
+.about-button{
+    float: right;
+    margin-top: 30px;
+}

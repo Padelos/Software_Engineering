@@ -10,7 +10,7 @@ import Pricing from "./views/pricingPage";
 import About from "./views/aboutPage";
 import Login from "./views/loginPage";
 import Register from "./views/registerPage";
-import ProtectedPage from "./views/ProtectedPage";
+import BookingPage from "./views/BookingPage";
 
 
 
@@ -25,9 +25,8 @@ function App() {
           <OurNavbar />
           <Routes>
           <Route element={<PrivateRoute />}>
-            <Route path="/protected" element={<ProtectedPage />} />
+            <Route path="/booking" element={<BookingPage />} />
           </Route>
-            
             <Route element={<Login/>} path="/login" />
             <Route element={<Register/>} path="/register" />
             <Route element={<Pricing/>} path="/pricing" />

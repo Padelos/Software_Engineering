@@ -17,12 +17,12 @@ export default function OurNavbar() {
         <Nav.Link href="/pricing">Pricing</Nav.Link>
         {user ? (
           <>
-          <Nav.Link href="/protected">Protected Page</Nav.Link>
+          <Nav.Link href="/booking">Book Now</Nav.Link>
           </>
 
         ):
         (<>
-          <Nav.Link href="/register">Register</Nav.Link>
+          
         </>)}
 
       </Nav>
