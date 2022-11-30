@@ -8,10 +8,14 @@ import Paper from '@mui/material/Paper';
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
 import Modal from 'react-bootstrap/Modal';
-
+import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 function ProtectedPage() {
+  let navigate = useNavigate();
+
+
   const [res, setRes] = useState("");
   const api = useAxios();
   const [loaded, setLoaded] = useState(false);
@@ -28,14 +32,49 @@ function ProtectedPage() {
   const [end_date, set_end_date] = useState(new Date());
   const [buttonDisabled, setButtonDisabled] = useState(true);
 
+  const handleBook = () =>{
+    console.log(itemId)
+    console.log(start_date.toLocaleString().split(',')[0]);
+    console.log(end_date.toLocaleString().split(',')[0]);
+    const sendData = async () => {
+      var obj = {
+        parkingId:itemId,
+        startDate: start_date.toLocaleDateString("en-GB", { // you can use undefined as first argument
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        }),
+        endDate: end_date.toLocaleDateString("en-GB", { // you can use undefined as first argument
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        })
+      }
+      try{
+        const response = await api.post("/reservations/book/",obj);
+        if(response.status === 200 ){
+          navigate('/'); //TODO: Change this to /bookings/
+        }
+      }
+      catch(err){
+        console.log(err)
+      }
+      
+    }
+    sendData();
+    
+  }
+
   const changeDates = (start,end) =>{
     set_start_date(start);
     set_end_date(end);
 
-    console.log("DATES ARE");
-    console.log(start);
-    console.log(end);
+    
+    
     if(start != null && end != null){
+      
+      console.log(start.toLocaleString().split(',')[0]);
+      console.log(end.toLocaleString().split(',')[0]);
       setButtonDisabled(false)
     }
   }
@@ -65,10 +104,6 @@ function ProtectedPage() {
       <div>
         <h1>Projected Page</h1>
         <p>{res}</p>
-        <p>Example calendar for parking spot 1</p>
-        
-      
-
         Available Parking Spots<br></br>
         <Table striped borderless hover >
         <thead>
@@ -88,7 +123,7 @@ function ProtectedPage() {
           ))}
         </tbody>
       </Table>
-         <Modal show={show} onHide={handleClose} animation={false} >
+        <Modal show={show} onHide={handleClose} animation={false} >
         <Modal.Header>Booking for Parking Spot {itemId}</Modal.Header>
         <Modal.Body style={{
           display: "flex",
@@ -103,7 +138,7 @@ function ProtectedPage() {
           <Button variant="secondary" onClick={handleClose}>
             Cancel
           </Button>
-          <Button disabled={buttonDisabled}  variant="primary" onClick={handleClose}>
+          <Button disabled={buttonDisabled}  variant="primary" onClick={handleBook}>
             Book
           </Button>
         </Modal.Footer>

@@ -3,8 +3,8 @@ import AuthContext from "../context/AuthContext";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
-
-
+import Stack from 'react-bootstrap/Stack';
+import Card from 'react-bootstrap/Card';
 const LoginPage = () => {
   const { loginUser } = useContext(AuthContext);
   const handleSubmit = e => {
@@ -16,8 +16,10 @@ const LoginPage = () => {
   };
 
   return (
-   
-      <Form onSubmit={handleSubmit}>
+    <Stack className="col-md-5 mx-auto py-4">
+      <Card style={{borderRadius: "0px"}}>
+        <Card.Body>
+        <Form onSubmit={handleSubmit}>
       <Form.Group controlId="username" className="mb-3" >
         <Form.Label >Username</Form.Label>
         <Form.Control type="text" placeholder="Enter username" />
@@ -30,8 +32,15 @@ const LoginPage = () => {
       <Button variant="primary" type="submit">
         Submit
       </Button>
-    </Form>
+      <Form.Group className="mb-3 text-center">
+      Don't you have an account? <a href="/register">Register here</a>
+      </Form.Group>
      
+    </Form>
+        </Card.Body>
+      </Card>
+      
+    </Stack>
   );
 };
 /**

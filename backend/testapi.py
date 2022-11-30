@@ -16,31 +16,42 @@ url2 = 'http://localhost:8000/api/testuser/'
 bearer_tk = "Bearer "+x.json()['access']
 headers = {"Authorization": bearer_tk}
 print(requests.post(url2, headers=headers).json())
+print()
 
 
 print("CHECKING RESERVATIONS FOR PARKING SPOT 1: /api/reservations/1")
 bearer_tk = "Bearer "+x.json()['access']
 headers = {"Authorization": bearer_tk}
 print(requests.get("http://localhost:8000/api/reservations/1", headers=headers).json())
+print()
 
 
 print('CHECK BOOKING OF RESERVATION FOR PARKING SPOT 1: /api/reservations/book')
 obj = {'parkingId':'1','startDate':'31/12/2022','endDate':'01/01/2023'}
 print(requests.post("http://localhost:8000/api/reservations/book/", headers=headers,json=obj).json())
+print()
 
 
 print('CHECK RESERVATIONS: /api/reservations/')
 print(requests.get("http://localhost:8000/api/reservations/", headers=headers).json())
+print()
 
 
 
 print("CHECK ALL PARKING SPOTS: /api/spots/")
 print(requests.get("http://localhost:8000/api/spots/", headers=headers).json())
+print()
 
 
 
 print("CHECK ALL USER RESERVATIONS: /api/reservations")
 print(requests.get("http://localhost:8000/api/reservations/", headers=headers).json())
+print()
+
+
+print("CHECK PATCH REQUEST: /api/modify")
+print(requests.patch("http://localhost:8000/api/reservations/modify", headers=headers,data={'id':'12','startDate':"04/01/2023",'endDate':'06/01/2023','parkingSpot':2}).json())
+print()
 
 #print("DELETING RESERVATION: /api/reservations/delete/")
 #print(requests.delete("http://localhost:8000/api/reservations/delete/3", headers=headers).json())

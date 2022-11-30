@@ -24,7 +24,7 @@ const Example = ({props, datesChangeFunction}) => {
 
   const onChange = (dates) => {
     const [start, end] = dates;
-    console.log(dates)
+    //console.log(dates)
     setStartDate(start);
     setEndDate(end);
     datesChangeFunction(start,end);
@@ -35,7 +35,7 @@ const Example = ({props, datesChangeFunction}) => {
       try {
         
         const response = await api.get("/reservations/"+props.parkingSpot.itemId);
-        console.log(response.data.response)
+        //console.log(response.data.response)
         for(var krathsh in response.data.response){
           if(krathsh in krathseis)
             continue
@@ -71,7 +71,7 @@ const Example = ({props, datesChangeFunction}) => {
   if (loaded === false) {
     return loaded;
   } else {
-    console.log(dateRanges)
+    //console.log(dateRanges)
     return (
       <DatePicker
       onChange={onChange}

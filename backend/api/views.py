@@ -117,6 +117,70 @@ def getParkingSpots(request):
 
 
 '''
+Changes the reservation dates
+'''
+@api_view(['PATCH'])
+@permission_classes([IsAuthenticated])
+def modifyReservation(request):
+    reservationId = request.data.get('id')
+    today = timezone.now().date()
+
+    '''
+    Check if the reservation id is associated with user
+    And then check if the dates are in correct format 
+    '''
+    if not Reservation.objects.filter(id=reservationId, user=request.user).exists():
+        return JsonResponse({"error":"Invalid user or reservation"},status=400)
+    try:
+        startDate = timezone.datetime.strptime(request.data.get("startDate"), '%d/%m/%Y').date()
+        endDate = timezone.datetime.strptime(request.data.get("endDate"), '%d/%m/%Y').date()
+    except(ValueError, TypeError):
+        return JsonResponse({"error":"Dates must be in format DD/MM/YYYY"},status=400)
+    
+    if startDate >= endDate or (startDate < today) or (endDate < today):
+        return JsonResponse({"error":"Invalid start and end date."},status=400)
+
+
+    res = Reservation.objects.get(id=reservationId, user=request.user)
+    parkingSpot = res.parkingSpot
+    oldParkingSpot = None
+
+    if request.data.get('parkingSpot'):#if user wants a new parking spot
+        oldParkingSpot = parkingSpot #keep a reference to the old parkingspot in order to remove the reservation
+        parkingSpot = ParkingSpot.objects.get(id=request.data.get('parkingSpot'))#change the parkingspot to the new one
+    
+    print(Reservation.objects.filter(parkingSpot=parkingSpot).filter(Q(endDate__gte=today)).exclude(id=res.id))
+    #reservations = Reservation.objects.filter(parkingSpot=parkingSpot).filter(Q(endDate__gte=today)).all()
+    reservations = Reservation.objects.filter(parkingSpot=parkingSpot).filter(Q(endDate__gte=today)).exclude(id=res.id)
+    for reservation in reservations:
+        #if reservation.id == res.id:
+        #    continue
+        print(reservation.id)
+        #Check to see if there is any reservation associated with parking spot whose dates overlap with new reservation date
+        if (startDate <= reservation.endDate ) and (endDate >= reservation.reservationDate):
+            #if the dates overlap in any way
+            return JsonResponse({"error":"Parking Spot is not available"},status=400)
+    
+
+    if oldParkingSpot != None:
+        oldParkingSpot.reservations.remove(res)
+        oldParkingSpot.save()
+
+    
+    res.reservationDate = startDate
+    res.endDate = endDate
+    res.parkingSpot = parkingSpot
+    parkingSpot.reservations.add(res)
+
+    res.save()
+    parkingSpot.save()
+    
+    
+    return JsonResponse({"response": 'good'})
+
+
+
+'''
 Returns reservations for user
 '''
 @api_view(['GET'])
@@ -178,22 +242,23 @@ def bookReservation(request):
     today = timezone.now().date()
     
     parkingSpotId = request.data['parkingId']
+    print("RECEIVED " + str(request.data.get("startDate")) + " " + str(request.data.get("endDate")))
     try:
         startDate = timezone.datetime.strptime(request.data.get("startDate"), '%d/%m/%Y').date()
     
         endDate = timezone.datetime.strptime(request.data.get("endDate"), '%d/%m/%Y').date()
     except(ValueError, TypeError):
-        return JsonResponse({"error":"Dates must be in format DD/MM/YYYY"})
+        return JsonResponse({"error":"Dates must be in format DD/MM/YYYY"},status=400)
     
     if startDate >= endDate or (startDate < today) or (endDate < today):
-        return JsonResponse({"error":"Invalid start and end date."})
+        return JsonResponse({"error":"Invalid start and end date."},status=400)
 
     reservations = Reservation.objects.filter(parkingSpot=parkingSpotId).filter(Q(endDate__gte=today)).all()
     for reservation in reservations:
         #Check to see if there is any reservation associated with parking spot whose dates overlap with new reservation date
         if (startDate <= reservation.endDate ) and (endDate >= reservation.reservationDate):
             #if the dates overlap in any way
-            return JsonResponse({"error":"Parking Spot is not available"})
+            return JsonResponse({"error":"Parking Spot is not available"},status=400)
     ## If no reservation with overlapping dates is found
 
     pSpot = ParkingSpot.objects.get(id=parkingSpotId) # get parking spot object to associate with reservation
@@ -212,7 +277,7 @@ Deletes reservation
 @permission_classes([IsAuthenticated])
 def deleteReservation(request,reservationId):
     if not Reservation.objects.filter(id=reservationId,user=request.user).exists():
-        return JsonResponse({"response": 'Error while processing the request'})
+        return JsonResponse({"response": 'Error while processing the request'},status=400)
     query = Reservation.objects.get(id=reservationId,user=request.user)
     query.delete()
     return JsonResponse({"response": 'Reservation Deleted'})
