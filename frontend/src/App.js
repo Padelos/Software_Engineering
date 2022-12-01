@@ -11,6 +11,7 @@ import About from "./views/aboutPage";
 import Login from "./views/loginPage";
 import Register from "./views/registerPage";
 import BookingPage from "./views/BookingPage";
+import MyReservations from "./views/MyReservations";
 
 
 
@@ -26,6 +27,7 @@ function App() {
           <Routes>
           <Route element={<PrivateRoute />}>
             <Route path="/booking" element={<BookingPage />} />
+            <Route path="/myReservations" element={<MyReservations/>}></Route>
           </Route>
             <Route element={<Login/>} path="/login" />
             <Route element={<Register/>} path="/register" />

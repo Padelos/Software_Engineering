@@ -19,7 +19,7 @@ const Example = ({props, datesChangeFunction}) => {
 
   var disabledDateRanges = [];
 
-
+  
   
 
   const onChange = (dates) => {

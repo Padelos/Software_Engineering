@@ -18,6 +18,7 @@ export default function OurNavbar() {
         {user ? (
           <>
           <Nav.Link href="/booking">Book Now</Nav.Link>
+          <Nav.Link href="/myReservations">Reservations</Nav.Link>
           </>
 
         ):
