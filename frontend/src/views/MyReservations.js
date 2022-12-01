@@ -51,13 +51,33 @@ const MyReservations = () => {
       setButtonDisabled(false)
     }
   }
+
+  const handleDelete= () =>{
+    //reservations/delete/<id>
+    console.log(reservation)
+    const sendData = async () => {
+        try{
+            let str = "/reservations/delete/"+String(reservation.id);
+          const response = await api.delete(str);
+          if(response.status === 200 ){
+            window.location.reload();
+          }
+        }
+        catch(err){
+          console.log(err)
+        }
+        
+      }
+      sendData();
+  }
+
   const handleSelect=(e)=>{
 
     
     setitemId( e)
 
   }
-  const handleModify = () =>{
+  const handleModify = () => {
     console.log(reservation)
     console.log("PARKING SPOT " + String(itemId));
     const sendData = async () => {
@@ -121,7 +141,7 @@ const MyReservations = () => {
     return loaded;
   }else{
     //console.log(parkingSpots)
-    console.log(data)
+    //console.log(data)
     //console.log("EXPIRED")
     //console.log(expiredData)
     return (
@@ -147,10 +167,7 @@ const MyReservations = () => {
             <td align="center">{itm.reservationDate}</td>
             <td align="center"> {itm.endDate}</td>
             <td align="center">Parking Spot {itm.parkingSpot.id}</td>
-            <td >
-                <Container fluid  >
-                <Row  style={{justifyContent:"center"}}>
-                    <Col xs="auto">
+            <td align="center">
                     <OverlayTrigger
                         key="top1"
                         placement="top"
@@ -159,26 +176,9 @@ const MyReservations = () => {
                         Modify
                         </Tooltip>
                         }>
-                        <a style={{marginRight:20}} className="link-success" onClick={() =>{ setReservation(itm);handleShow()}}><PencilSquare size={20}/> </a>
+                        <a className="link-success" onClick={() =>{ setReservation(itm);handleShow()}}><PencilSquare size={20}/> </a>
                     </OverlayTrigger>
-                    </Col>
-                    <Col xs="auto">
-                    <OverlayTrigger
-                    key="top2"
-                    placement="top"
-                    overlay={
-                    <Tooltip id={`tooltip-top2`}>
-                    Cancel
-                    </Tooltip>
-                    }>
-                    <a style={{margin:"auto"}} href="/test" className="link-danger" ><XCircleFill size={20}/> </a>
-                    </OverlayTrigger>
-                    </Col>
-                </Row>
-                
-            
-            
-            </Container>
+
             </td>
           </tr>
           ))}
@@ -235,17 +235,28 @@ const MyReservations = () => {
             }} datesChangeFunction={changeDates}></Example></Col>
             </Row>
         </Container>
-
-        
            
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+            
+           <Container>
+            <Row>
+            <Col><Button variant="danger" lg="2" onClick={handleDelete}>
+            Delete
+            </Button>
+            </Col>
+                <Col  md="auto"><Button variant="secondary"  onClick={handleClose}>
             Cancel
           </Button>
-          <Button disabled={buttonDisabled}  variant="primary" onClick={handleModify}>
+          <Button style={{marginLeft:10}} disabled={buttonDisabled}  variant="primary" onClick={handleModify}>
             Modify
           </Button>
+          </Col>
+          
+
+            </Row>
+           </Container>
+          
         </Modal.Footer>
       </Modal>
       </section>
