@@ -2,16 +2,16 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.http import JsonResponse
-from api.serializer import MyTokenObtainPairSerializer, RegisterSerializer,ParkingSpotReservationsSerializer
+from api.serializer import MyTokenObtainPairSerializer, RegisterSerializer,ParkingSpotReservationsSerializer,UsersSerializer, GroupSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import generics
-from django.contrib.auth.models import User
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from django.contrib.auth.models import User, Group
+from rest_framework.permissions import AllowAny, IsAuthenticated,IsAdminUser
 
 from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
-
+import json
 import datetime
 from django.utils.timezone import make_aware
 from .serializer import ReservationSerializer
@@ -19,6 +19,7 @@ from .serializer import ReservationSerializer
 from django.utils import timezone
 from .models import *
 from django.db.models import Q
+from django.contrib.admin.views.decorators import staff_member_required
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
@@ -296,3 +297,59 @@ def getReservationsForSpot(request,id):
     #print(serializer.data)
     return JsonResponse({"response": list(serializer.data)})
 
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated,IsAdminUser])
+def getUsers(request):
+    data = User.objects.all()
+    serializerData = UsersSerializer(data,many=True)
+    return JsonResponse({"response":list(serializerData.data)})
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated,IsAdminUser])
+def getGroups(request):
+    data = Group.objects.all()
+    serializerData = GroupSerializer(data,many=True)
+    return JsonResponse({"response":list(serializerData.data)})
+
+
+'''
+Used to add a user to the specified user group
+'''
+@api_view(['PATCH'])
+@permission_classes([IsAuthenticated,IsAdminUser])
+def assignGroup(request):
+    
+    print(request.body)
+
+    data = json.loads(request.body)
+
+    userId = data["userId"]
+    groupIds = data["groupIds"]
+   
+
+    user = User.objects.get(id=userId)
+
+    for group in groupIds:
+        g = Group.objects.get(id=group['id'])
+        if user.groups.filter(name = g.name).exists():
+            continue
+        user.groups.add(g)
+    return JsonResponse({"response":"Added user to groups"})
+    
+@api_view(['PATCH'])
+@permission_classes([IsAuthenticated,IsAdminUser])
+def removeUserFromGroup(request):
+    userId = request.data.get('userId')
+    groupId = request.data.get('groupId')
+
+    user = User.objects.get(id=userId)
+
+    if user.groups.filter(id = groupId).exists():
+        group = Group.objects.get(id=groupId)
+        user.groups.remove(group)
+    else:
+        return JsonResponse({"response": 'Error while processing the request'},status=400)
+
+    return JsonResponse({"response":"Removed user from group"})

@@ -1,5 +1,5 @@
 import requests
-
+import json
 url = 'http://localhost:8000/api/token/'
 myobj = {'username': 'george','password':'123123123'} #credentials
 
@@ -53,8 +53,24 @@ print("CHECK PATCH REQUEST: /api/modify")
 print(requests.patch("http://localhost:8000/api/reservations/modify", headers=headers,data={'id':'12','startDate':"04/01/2023",'endDate':'06/01/2023','parkingSpot':2}).json())
 print()
 
+
+print("GET ALL USERS: /users/")
+print(requests.get("http://localhost:8000/api/users", headers=headers).json())
+print()
+
+
+
+print("GET ALL GROUPS: /groups/")
+print(requests.get("http://localhost:8000/api/groups", headers=headers).json())
+print()
+
+
 #print("DELETING RESERVATION: /api/reservations/delete/")
 #print(requests.delete("http://localhost:8000/api/reservations/delete/3", headers=headers).json())
+
+print("CHECK PATCH REQUEST: /api/groups/remove")
+print(requests.patch("http://localhost:8000/api/groups/remove", headers=headers,data={'userId':'1','groupId':'1'}).json())
+print()
 
 
 ###Days testing algorithm

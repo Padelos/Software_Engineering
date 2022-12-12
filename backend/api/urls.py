@@ -22,5 +22,10 @@ urlpatterns = [
     path('reservations/delete/<int:reservationId>',views.deleteReservation,name='deleteReservation'),
     path('reservations/modify',views.modifyReservation,name='modifyReservation'),
 
-    path('spots/',views.getParkingSpots,name='getParkingSpots')
+    path('spots/',views.getParkingSpots,name='getParkingSpots'),
+
+    path('users/',views.getUsers, name='getUsers'),
+    path('groups/',views.getGroups,name="getGroups"),
+    path('groups/add',views.assignGroup,name='assignGroup'),
+    path('groups/remove',views.removeUserFromGroup,name='removeUserFromGroup'),
 ]
