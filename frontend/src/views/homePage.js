@@ -13,6 +13,7 @@ import image3 from "../images/parking3.png"
 
 const Home = () => {
   const { user } = useContext(AuthContext);
+  console.log(user)
   return (
     <Container fluid="md" >
     <Row>

@@ -12,8 +12,8 @@ import Login from "./views/loginPage";
 import Register from "./views/registerPage";
 import BookingPage from "./views/BookingPage";
 import MyReservations from "./views/MyReservations";
-
-
+import AdminRoute from "./utils/AdminRoute";
+import UsersPage from "./views/usersPage";
 
   
 function App() {
@@ -25,6 +25,9 @@ function App() {
         <AuthProvider>
           <OurNavbar />
           <Routes>
+            <Route element={<AdminRoute/>}>
+              <Route path="/users" element={<UsersPage/>}></Route>
+            </Route>
           <Route element={<PrivateRoute />}>
             <Route path="/booking" element={<BookingPage />} />
             <Route path="/myReservations" element={<MyReservations/>}></Route>

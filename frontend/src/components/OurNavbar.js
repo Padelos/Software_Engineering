@@ -4,7 +4,7 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import NavDropdown from 'react-bootstrap/NavDropdown';
 export default function OurNavbar() {
   const { user, logoutUser } = useContext(AuthContext);
   return (
@@ -15,17 +15,27 @@ export default function OurNavbar() {
         <Nav.Link href="/">Home</Nav.Link>
         <Nav.Link href="/about">About</Nav.Link>
         <Nav.Link href="/pricing">Pricing</Nav.Link>
+        
         {user ? (
           <>
           <Nav.Link href="/booking">Book Now</Nav.Link>
           <Nav.Link href="/myReservations">Reservations</Nav.Link>
+          {user.is_staff ? (<>
+          <NavDropdown title="Admin" id="basic-nav-dropdown">
+              <NavDropdown.Item href="/users">All Users</NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.2">
+                All reservations
+              </NavDropdown.Item>
+              
+            </NavDropdown>
+        </>):(<></>)}
           </>
 
         ):
         (<>
           
         </>)}
-
+        
       </Nav>
       {user?(<>
         <Nav>

@@ -38,7 +38,8 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("authTokens", JSON.stringify(data));
       navigate("/");
     } else {
-      alert("Something went wrong!");
+      console.log(data)
+      alert(data.detail);
     }
   };
   
@@ -57,7 +58,10 @@ export const AuthProvider = ({ children }) => {
     if (response.status === 201) {
       navigate("/login");
     } else {
-      alert("Something went wrong!");
+      response.json().then((data)=>{
+        alert(data["password"]);
+      })
+      
     }
   };
 
