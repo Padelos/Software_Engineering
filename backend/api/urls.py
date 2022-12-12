@@ -20,6 +20,7 @@ urlpatterns = [
     path('reservations/<int:id>/',views.getReservationsForSpot,name='getReservationsForSpot'),
     path('reservations/book/',views.bookReservation,name='bookReservation'),
     path('reservations/delete/<int:reservationId>',views.deleteReservation,name='deleteReservation'),
+    path('reservations/modify',views.modifyReservation,name='modifyReservation'),
 
     path('spots/',views.getParkingSpots,name='getParkingSpots')
 ]

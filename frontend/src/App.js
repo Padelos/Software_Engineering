@@ -1,31 +1,43 @@
 import React, { useState }  from "react";
 import "./index.css";
 import Footer from "./components/Footer";
-import Navbar from "./components/Navbar";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import OurNavbar from "./components/OurNavbar";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import PrivateRoute from "./utils/PrivateRoute";
 import { AuthProvider } from "./context/AuthContext";
 import Home from "./views/homePage";
+import Pricing from "./views/pricingPage";
+import About from "./views/aboutPage";
 import Login from "./views/loginPage";
 import Register from "./views/registerPage";
-import ProtectedPage from "./views/ProtectedPage";
+import BookingPage from "./views/BookingPage";
+import MyReservations from "./views/MyReservations";
 
-import Example from "./components/Example"
+
+
+  
 function App() {
+
   const [value, onChange] = useState(new Date());
   return (
     <Router>
       <div className="flex flex-col min-h-screen overflow-hidden">
         <AuthProvider>
-          <Navbar />
-          <Switch>
-            <PrivateRoute component={ProtectedPage} path="/protected" exact />
-            <Route component={Login} path="/login" />
-            <Route component={Register} path="/register" />
-            <Route component={Home} path="/" />
-          </Switch>
+          <OurNavbar />
+          <Routes>
+          <Route element={<PrivateRoute />}>
+            <Route path="/booking" element={<BookingPage />} />
+            <Route path="/myReservations" element={<MyReservations/>}></Route>
+          </Route>
+            <Route element={<Login/>} path="/login" />
+            <Route element={<Register/>} path="/register" />
+            <Route element={<Pricing/>} path="/pricing" />
+            <Route element={<About/>} path="/about" />
+            <Route exact element={<Home/>} path="/" />
+          </Routes>
           
         </AuthProvider>
+        
         <Footer />
         
       </div>

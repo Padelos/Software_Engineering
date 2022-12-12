@@ -1,0 +1,39 @@
+.home-content{
+    margin: auto;
+    width: 50%;
+}
+
+.home-h1{
+    margin-bottom: 0;
+    font-size: 60px;
+}
+
+.home-h3{
+    margin-top: 0;
+    margin-left: 50px;
+    font-size: 15px;
+}
+
+.carouselTest{
+    width:100%;
+    height:500px;
+    margin-top:10px;
+}
+.carouselItem{
+    width:100%;
+    
+}
+.container{
+    max-width: 100%;
+}
+
+.home-p{
+    margin-top: 30px;
+    text-align: justify;
+    font-size: 27px;
+}
+
+.home-span{
+    margin-top: 30px;
+    float: right;
+}

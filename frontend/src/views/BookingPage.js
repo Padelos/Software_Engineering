@@ -12,7 +12,7 @@ import { Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 
-function ProtectedPage() {
+function BookingPage() {
   let navigate = useNavigate();
 
 
@@ -174,4 +174,4 @@ return (
       </ButtonGroup>
     );
  */
-export default ProtectedPage;
+export default BookingPage;

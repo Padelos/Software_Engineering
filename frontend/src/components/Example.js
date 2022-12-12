@@ -7,7 +7,7 @@ import useAxios from "../utils/useAxios";
 // CSS Modules, react-datepicker-cssmodules.css
 // import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 
-const Example = () => {
+const Example = ({props, datesChangeFunction}) => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
@@ -18,16 +18,23 @@ const Example = () => {
   let krathseis = []
 
   var disabledDateRanges = [];
+
+  
+  
+
   const onChange = (dates) => {
     const [start, end] = dates;
-    console.log(dates)
+    //console.log(dates)
     setStartDate(start);
     setEndDate(end);
+    datesChangeFunction(start,end);
   };
   useEffect(() => {
+    console.log(props.parkingSpot.itemId);
     const fetchData = async () => {
       try {
-        const response = await api.get("/reservations/1");
+        
+        const response = await api.get("/reservations/"+props.parkingSpot.itemId);
         //console.log(response.data.response)
         for(var krathsh in response.data.response){
           if(krathsh in krathseis)
@@ -44,8 +51,8 @@ const Example = () => {
         //console.log(krathseis)
         
         disabledDateRanges = krathseis.map(range => ({
-          start: new Date(range.start),
-          end: new Date(range.end)
+          start: new Date(range.start).setHours(0,0,0,0),
+          end: new Date(range.end).setHours(0,0,0,0)
         }));
         //console.log("TEST")
         
@@ -64,10 +71,9 @@ const Example = () => {
   if (loaded === false) {
     return loaded;
   } else {
-    console.log(dateRanges)
+    //console.log(dateRanges)
     return (
       <DatePicker
-      selected={startDate}
       onChange={onChange}
       startDate={startDate}
       endDate={endDate}
@@ -76,7 +82,7 @@ const Example = () => {
       selectsDisabledDaysInRange
       inline 
       withPortal
-        
+      minDate={new Date()}
         />
     );
     
