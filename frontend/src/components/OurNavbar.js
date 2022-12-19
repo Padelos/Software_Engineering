@@ -23,7 +23,7 @@ export default function OurNavbar() {
           {user.is_staff ? (<>
           <NavDropdown title="Admin" id="basic-nav-dropdown">
               <NavDropdown.Item href="/users">All Users</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
+              <NavDropdown.Item href="/allreservations">
                 All reservations
               </NavDropdown.Item>
               

@@ -84,7 +84,7 @@ const PagedTable = (props) =>{
                     <Row>
                         <Col>
                         <InputGroup className="mb-3">
-                                <InputGroup.Text id="basic-addon1">Username</InputGroup.Text>
+                                <InputGroup.Text id="basic-addon1">Search</InputGroup.Text>
                                 <Form.Control
                                 placeholder="Username"
                                 aria-label="Username"

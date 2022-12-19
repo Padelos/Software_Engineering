@@ -14,6 +14,7 @@ import BookingPage from "./views/BookingPage";
 import MyReservations from "./views/MyReservations";
 import AdminRoute from "./utils/AdminRoute";
 import UsersPage from "./views/usersPage";
+import AllReservationsPage from "./views/AllReservationsPage";
 
   
 function App() {
@@ -27,6 +28,7 @@ function App() {
           <Routes>
             <Route element={<AdminRoute/>}>
               <Route path="/users" element={<UsersPage/>}></Route>
+              <Route path="/allreservations" element={<AllReservationsPage/>}></Route>
             </Route>
           <Route element={<PrivateRoute />}>
             <Route path="/booking" element={<BookingPage />} />

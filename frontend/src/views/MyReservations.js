@@ -204,8 +204,9 @@ const MyReservations = () => {
         {user && <UserInfo user={user} /> }
         
         <h1>You are on home page!</h1>
+        {data.length > 0 ? (<>
         
-        <Button style={{borderRadius: "0px", background:"white",borderColor:"black", marginRight:"5px"}} onClick={handlePageIncrease} className=" float-sm-end "><ArrowRight color="black"></ArrowRight></Button>
+          <Button style={{borderRadius: "0px", background:"white",borderColor:"black", marginRight:"5px"}} onClick={handlePageIncrease} className=" float-sm-end "><ArrowRight color="black"></ArrowRight></Button>
         <Button style={{borderRadius: "0px", background:"white",borderColor:"black", marginRight:"5px"}} onClick={handlePageDecrease} className=" float-sm-end "><ArrowLeft color="black"></ArrowLeft></Button>
         
         <div style={{marginRight:"5px"}}className="float-sm-end ">
@@ -271,6 +272,10 @@ const MyReservations = () => {
         </tbody>
       </Table>
 
+        </>) : (<>
+        No reservations present!
+        </>)}
+        
 
 
       <Modal show={show} onHide={handleClose} animation={false} >

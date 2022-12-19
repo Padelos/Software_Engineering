@@ -34,7 +34,7 @@ export default function UsersPage(){
     
     const handleGroupRemoval = (gid)=>
     {
-      console.log("REMOVING GROUP " + String(gid) + " FROM USER "+ selectedUser.username)
+      //console.log("REMOVING GROUP " + String(gid) + " FROM USER "+ selectedUser.username)
       var obj = {
         userId: selectedUser.id,
         groupId: gid
@@ -73,7 +73,7 @@ export default function UsersPage(){
     }
     
     const handleGroupModify = () => {
-      console.log(selectedGroups)
+      //console.log(selectedGroups)
       let obj = {
         userId:String(selectedUser.id),
         groupIds:[]
@@ -88,7 +88,7 @@ export default function UsersPage(){
       }
       const changeGroup = async () =>{
         try{
-          console.log(JSON.stringify(obj))
+          //console.log(JSON.stringify(obj))
           const response = await api.patch("/groups/add",JSON.stringify(obj));
           if(response.status === 200 ){
             window.location.reload();
@@ -100,7 +100,7 @@ export default function UsersPage(){
       }
 
       changeGroup();
-      console.log(obj)
+      //console.log(obj)
     }
 
     useEffect(()=>{
