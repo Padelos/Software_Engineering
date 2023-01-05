@@ -1,20 +1,83 @@
 import { useState, useContext } from "react";
 import AuthContext from "../context/AuthContext";
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
+import Stack from 'react-bootstrap/Stack';
+import { Row,Col } from "react-bootstrap";
+import Card from 'react-bootstrap/Card';
 function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const { registerUser } = useContext(AuthContext);
 
   const handleSubmit = async e => {
     e.preventDefault();
-    registerUser(username, password, password2);
+    registerUser(username, password, password2, firstName,lastName);
   };
 
   return (
     <section>
-      <form onSubmit={handleSubmit}>
+      <Stack className="col-md-5 mx-auto py-4">
+      <Card style={{borderRadius: "0px"}}>
+        <Card.Body>
+      <Form onSubmit={handleSubmit}>
+      
+        <Form.Group as={Col} controlId="username" className="mb-3" >
+          <Form.Label >Username</Form.Label>
+          <Form.Control type="text" placeholder="Enter username" onChange={e => setUsername(e.target.value)} />
+        </Form.Group>
+
+        
+        <Row  >
+        <Form.Group  as={Col} className="mb-3" controlId="firstName">
+          <Form.Label>First Name</Form.Label>
+          <Form.Control type="text" placeholder="Enter First Name" onChange={e => setFirstName(e.target.value)} required/>
+        </Form.Group>
+      
+        <Form.Group   as={Col} className="mb-3" controlId="lastName">
+          <Form.Label>Last Name</Form.Label>
+          <Form.Control type="text" placeholder="Enter Last Name" onChange={e => setLastName(e.target.value)} required/>
+        </Form.Group>
+
+        </Row>
+
+        <Row >
+        
+        <Form.Group  as={Col} className="mb-3" controlId="password">
+          <Form.Label>Password</Form.Label>
+          <Form.Control type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} required/>
+        </Form.Group>
+      
+        <Form.Group   as={Col} className="mb-3" controlId="confirm-password">
+          <Form.Label>Confirm Password</Form.Label>
+          <Form.Control type="password" placeholder="Password" onChange={e => setPassword2(e.target.value)} required/>
+        </Form.Group>
+        </Row>
+        
+        
+        
+        <Button variant="primary" type="submit">
+        Submit
+        </Button>
+     
+      </Form>
+        </Card.Body>
+      </Card>
+      
+    </Stack>
+      
+    </section>
+  );
+}
+
+export default Register;
+
+/**
+ <form onSubmit={handleSubmit}>
         <h1>Register</h1>
         <hr />
         <div>
@@ -50,8 +113,29 @@ function Register() {
         </div>
         <button>Register</button>
       </form>
-    </section>
-  );
-}
+<Stack className="col-md-5 mx-auto py-4">
+      <Card style={{borderRadius: "0px"}}>
+        <Card.Body>
+        <Form onSubmit={handleSubmit}>
+      <Form.Group controlId="username" className="mb-3" >
+        <Form.Label >Username</Form.Label>
+        <Form.Control type="text" placeholder="Enter username" />
+      </Form.Group>
 
-export default Register;
+      <Form.Group className="mb-3" controlId="password">
+        <Form.Label>Password</Form.Label>
+        <Form.Control type="password" placeholder="Password" />
+      </Form.Group>
+      <Button variant="primary" type="submit">
+        Submit
+      </Button>
+      <Form.Group className="mb-3 text-center">
+      Don't have an account? <a href="/register">Register here!</a>
+      </Form.Group>
+     
+    </Form>
+        </Card.Body>
+      </Card>
+      
+    </Stack>
+ */

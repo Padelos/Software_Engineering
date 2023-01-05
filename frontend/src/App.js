@@ -12,9 +12,10 @@ import Login from "./views/loginPage";
 import Register from "./views/registerPage";
 import BookingPage from "./views/BookingPage";
 import MyReservations from "./views/MyReservations";
-
-
-
+import AdminRoute from "./utils/AdminRoute";
+import UsersPage from "./views/usersPage";
+import AllReservationsPage from "./views/AllReservationsPage";
+import UserProfile from "./views/profile";
   
 function App() {
 
@@ -25,9 +26,14 @@ function App() {
         <AuthProvider>
           <OurNavbar />
           <Routes>
+            <Route element={<AdminRoute/>}>
+              <Route path="/users" element={<UsersPage/>}></Route>
+              <Route path="/allreservations" element={<AllReservationsPage/>}></Route>
+            </Route>
           <Route element={<PrivateRoute />}>
             <Route path="/booking" element={<BookingPage />} />
             <Route path="/myReservations" element={<MyReservations/>}></Route>
+            <Route path="/profile" element={<UserProfile/>}></Route>
           </Route>
             <Route element={<Login/>} path="/login" />
             <Route element={<Register/>} path="/register" />

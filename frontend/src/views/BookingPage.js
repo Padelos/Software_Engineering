@@ -10,7 +10,7 @@ import Table from 'react-bootstrap/Table';
 import Modal from 'react-bootstrap/Modal';
 import { Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-
+import { Container } from "react-bootstrap";
 
 function BookingPage() {
   let navigate = useNavigate();
@@ -31,11 +31,17 @@ function BookingPage() {
   const [start_date, set_start_date] = useState(new Date());
   const [end_date, set_end_date] = useState(new Date());
   const [buttonDisabled, setButtonDisabled] = useState(true);
-
+  const abbrMap = {
+    "PREM":"PREMIUM",
+    "ECO":"ECONOMY",
+    "BUS":"BUSINESS"
+  };
   const handleBook = () =>{
     console.log(itemId)
     console.log(start_date.toLocaleString().split(',')[0]);
     console.log(end_date.toLocaleString().split(',')[0]);
+
+   
     const sendData = async () => {
       var obj = {
         parkingId:itemId,
@@ -100,14 +106,14 @@ function BookingPage() {
   }
   else{
     //console.log(data)
+    //document.body.style.backgroundColor = "#292b2c"
     return (
-      <div>
-        <h1>Projected Page</h1>
-        <p>{res}</p>
+      <Container fluid="md" className="mt-2" >
+        <h1>Welcome to booking page</h1>
         Available Parking Spots<br></br>
         <Table striped borderless hover >
         <thead>
-          <tr className="align-me">
+          <tr align="center" className="align-me">
             <th>Parking Spot</th>
             <th>Type</th>
             <th>Action</th>
@@ -115,14 +121,16 @@ function BookingPage() {
         </thead>
         <tbody>
         {Array.from(data).map((itm, index) => (
-          <tr key={index}>
+          <tr align="center" key={index}>
             <td>ParkingSpot {itm.id}</td>
-            <td>{itm.parkingSpotType}</td>
+            <td>{abbrMap[itm.parkingSpotType]}</td>
              <td><Button variant="secondary" className="mr-2" onClick={() =>{ setItemId(itm.id);handleShow()}}> Check Availability </Button></td>
           </tr>
           ))}
         </tbody>
       </Table>
+
+      
         <Modal show={show} onHide={handleClose} animation={false} >
         <Modal.Header>Booking for Parking Spot {itemId}</Modal.Header>
         <Modal.Body style={{
@@ -143,7 +151,7 @@ function BookingPage() {
           </Button>
         </Modal.Footer>
       </Modal>
-      </div>
+      </Container>
     );
   }
   

@@ -1,8 +1,9 @@
 import requests
-
+import json
 url = 'http://localhost:8000/api/token/'
-myobj = {'username': 'george','password':'123123123'} #credentials
-
+myobj = {'username': 'georgegeorge','password':'123123ASDmi'} #credentials
+# george12345
+# moustakas12345
 x = requests.post(url, json = myobj)
 
 print("RECEIVED ACCESS TOKEN")
@@ -27,7 +28,7 @@ print()
 
 
 print('CHECK BOOKING OF RESERVATION FOR PARKING SPOT 1: /api/reservations/book')
-obj = {'parkingId':'1','startDate':'31/12/2022','endDate':'01/01/2023'}
+obj = {'parkingId':'1','startDate':'02/01/2023','endDate':'05/02/2023'}
 print(requests.post("http://localhost:8000/api/reservations/book/", headers=headers,json=obj).json())
 print()
 
@@ -50,13 +51,41 @@ print()
 
 
 print("CHECK PATCH REQUEST: /api/modify")
-print(requests.patch("http://localhost:8000/api/reservations/modify", headers=headers,data={'id':'12','startDate':"04/01/2023",'endDate':'06/01/2023','parkingSpot':2}).json())
+print(requests.patch("http://localhost:8000/api/reservations/modify", headers=headers,data={'id':'36','startDate':"04/04/2023",'endDate':'06/04/2023','parkingSpot':5}).json())
 print()
 
+
+print("GET ALL USERS: /users/")
+print(requests.get("http://localhost:8000/api/users", headers=headers).json())
+print()
+
+
+
+print("GET ALL GROUPS: /groups/")
+print(requests.get("http://localhost:8000/api/groups", headers=headers).json())
+print()
+
+
 #print("DELETING RESERVATION: /api/reservations/delete/")
-#print(requests.delete("http://localhost:8000/api/reservations/delete/3", headers=headers).json())
+#print(requests.delete("http://localhost:8000/api/reservations/delete/26", headers=headers).json())
+
+#print("CHECK PATCH REQUEST: /api/groups/remove")
+#print(requests.patch("http://localhost:8000/api/groups/remove", headers=headers,data={'userId':'1','groupId':'1'}).json())
+#print()
+
+print("CHECK GET REQUEST: /api/allreservations")
+print(requests.get("http://localhost:8000/api/allreservations", headers=headers).json())
+print()
 
 
+
+print("CHECK ADMIN PATCH REQUEST: /api/admin/reservations/modify")
+print(requests.patch("http://localhost:8000/api/admin/reservations/modify", headers=headers,data={'reservationId':"23",
+"startDate":"04/05/2023",
+"endDate":"09/05/2023",
+"parkingSpot":"4"
+}).json())
+print()
 ###Days testing algorithm
 #from datetime import datetime
 

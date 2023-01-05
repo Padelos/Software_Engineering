@@ -102,8 +102,6 @@ function ProtectedPage() {
     //console.log(data)
     return (
       <div>
-        <h1>Projected Page</h1>
-        <p>{res}</p>
         Available Parking Spots<br></br>
         <Table striped borderless hover >
         <thead>

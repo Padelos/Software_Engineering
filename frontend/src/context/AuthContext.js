@@ -38,11 +38,12 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("authTokens", JSON.stringify(data));
       navigate("/");
     } else {
-      alert("Something went wrong!");
+      console.log(data)
+      alert(data.detail);
     }
   };
   
-  const registerUser = async (username, password, password2) => {
+  const registerUser = async (username, password, password2, first_name, last_name) => {
     const response = await fetch("http://127.0.0.1:8000/api/register/", {
       method: "POST",
       headers: {
@@ -51,13 +52,18 @@ export const AuthProvider = ({ children }) => {
       body: JSON.stringify({
         username,
         password,
-        password2
+        password2,
+        first_name,
+        last_name
       })
     });
     if (response.status === 201) {
       navigate("/login");
     } else {
-      alert("Something went wrong!");
+      response.json().then((data)=>{
+        alert(data["password"]);
+      })
+      
     }
   };
 
