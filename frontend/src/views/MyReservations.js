@@ -70,7 +70,7 @@ const MyReservations = () => {
 
   const handleDelete= () =>{
     //reservations/delete/<id>
-    console.log(reservation)
+    //console.log(reservation)
     const sendData = async () => {
         try{
             let str = "/reservations/delete/"+String(reservation.id);
@@ -105,8 +105,8 @@ const MyReservations = () => {
 
   }
   const handleModify = () => {
-    console.log(reservation)
-    console.log("PARKING SPOT " + String(itemId));
+    //console.log(reservation)
+    //console.log("PARKING SPOT " + String(itemId));
     const sendData = async () => {
         var obj = {
           id: reservation.id,
@@ -200,7 +200,7 @@ const MyReservations = () => {
     
     return (
         
-        <section>
+        <section style={{height:"100vh"}}>
         {user && <UserInfo user={user} /> }
         
         <h1>You are on home page!</h1>

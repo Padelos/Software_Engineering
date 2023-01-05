@@ -142,12 +142,14 @@ export default function AllReservationsPage(){
         //console.log(tableData)
         //console.log(parkingSpots)
         return(
-            <section>
-                All Reservations
+            <section style={{height:"100vh"}}>
                 {tableData.length > 0 && <PagedTable data={tableData} sliceSize={15} columns={["Reservation ID","Start Date","End Date","Parking Spot ID",'Parking Spot Type',"Username","Action"]}></PagedTable>}
             
             
             
+
+
+
         <Modal show={show} size="lg" onHide={handleClose} animation={false} >
         <Modal.Header>Modify Reservation {reservation.id}</Modal.Header>
         <Modal.Body>

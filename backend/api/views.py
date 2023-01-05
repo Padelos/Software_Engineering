@@ -167,10 +167,20 @@ def modifyReservation(request):
         oldParkingSpot.reservations.remove(res)
         oldParkingSpot.save()
 
-    
+    delta = endDate - startDate
+    cost = 0
+    if parkingSpot.parkingSpotType == parkingSpot.PREMIUM:
+        cost = 29.99 * delta.days
+    elif parkingSpot.parkingSpotType == parkingSpot.BUSINESS:
+        cost = 14.99 * delta.days
+    else:
+        cost = 4.99 * delta.days
+
     res.reservationDate = startDate
     res.endDate = endDate
     res.parkingSpot = parkingSpot
+    res.totalCost = cost
+
     parkingSpot.reservations.add(res)
 
     res.save()
@@ -223,9 +233,18 @@ def adminModifyReservation(request):
     if oldParkingSpot != None:
         oldParkingSpot.reservations.remove(res)
         oldParkingSpot.save()
-
+    
+    delta = endDate - startDate
+    cost = 0
+    if parkingSpot.parkingSpotType == parkingSpot.PREMIUM:
+        cost = 29.99 * delta.days
+    elif parkingSpot.parkingSpotType == parkingSpot.BUSINESS:
+        cost = 14.99 * delta.days
+    else:
+        cost = 4.99 * delta.days
     
     res.reservationDate = startDate
+    res.totalCost = cost
     res.endDate = endDate
     res.parkingSpot = parkingSpot
     parkingSpot.reservations.add(res)
@@ -296,7 +315,7 @@ def bookReservation(request):
     today = timezone.now().date()
     
     parkingSpotId = request.data['parkingId']
-    print("RECEIVED " + str(request.data.get("startDate")) + " " + str(request.data.get("endDate")))
+    #print("RECEIVED " + str(request.data.get("startDate")) + " " + str(request.data.get("endDate")))
     try:
         startDate = timezone.datetime.strptime(request.data.get("startDate"), '%d/%m/%Y').date()
     
@@ -316,10 +335,18 @@ def bookReservation(request):
     ## If no reservation with overlapping dates is found
 
     pSpot = ParkingSpot.objects.get(id=parkingSpotId) # get parking spot object to associate with reservation
+    delta = endDate - startDate
+    cost = 0
+    if pSpot.parkingSpotType == pSpot.PREMIUM:
+        cost = 29.99 * delta.days
+    elif pSpot.parkingSpotType == pSpot.BUSINESS:
+        cost = 14.99 * delta.days
+    else:
+        cost = 4.99 * delta.days
     
     resEnd = endDate
 
-    reservation = Reservation.objects.create(user=request.user,reservationDate=startDate,durationMinutes=0,endDate=resEnd,totalCost=0,parkingSpot=pSpot)
+    reservation = Reservation.objects.create(user=request.user,reservationDate=startDate,durationMinutes=0,endDate=resEnd,totalCost=cost,parkingSpot=pSpot)
     
     pSpot.reservations.add(reservation)
     return JsonResponse({"response": 'Reservation Booked'})

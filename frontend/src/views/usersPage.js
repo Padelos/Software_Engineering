@@ -151,11 +151,9 @@ export default function UsersPage(){
     }
     else{
         return (
-          <section>
+          <section style={{height:"100vh"}}>
 
-              {usersArray.length > 0 && <PagedTable data={usersArray} sliceSize={15} columns={["ID","Username","First Name","Last Name",'Action']}></PagedTable>}
-          
-          
+          {usersArray.length > 0 && <PagedTable data={usersArray} sliceSize={15} columns={["ID","Username","First Name","Last Name",'Action']}></PagedTable>}
         <Modal show={show} onHide={handleClose} animation={true}   size="lg">
         <Modal.Header>Modifying User {selectedUser.username} (UserID :  {selectedUser.id} )</Modal.Header>
         <Modal.Body>

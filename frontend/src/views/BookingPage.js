@@ -10,7 +10,7 @@ import Table from 'react-bootstrap/Table';
 import Modal from 'react-bootstrap/Modal';
 import { Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-
+import { Container } from "react-bootstrap";
 
 function BookingPage() {
   let navigate = useNavigate();
@@ -106,10 +106,10 @@ function BookingPage() {
   }
   else{
     //console.log(data)
+    //document.body.style.backgroundColor = "#292b2c"
     return (
-      <div >
-        <h1>Projected Page</h1>
-        <p>{res}</p>
+      <Container fluid="md" className="mt-2" >
+        <h1>Welcome to booking page</h1>
         Available Parking Spots<br></br>
         <Table striped borderless hover >
         <thead>
@@ -151,7 +151,7 @@ function BookingPage() {
           </Button>
         </Modal.Footer>
       </Modal>
-      </div>
+      </Container>
     );
   }
   

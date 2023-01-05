@@ -28,7 +28,7 @@ print()
 
 
 print('CHECK BOOKING OF RESERVATION FOR PARKING SPOT 1: /api/reservations/book')
-obj = {'parkingId':'1','startDate':'31/12/2022','endDate':'01/01/2023'}
+obj = {'parkingId':'1','startDate':'02/01/2023','endDate':'05/02/2023'}
 print(requests.post("http://localhost:8000/api/reservations/book/", headers=headers,json=obj).json())
 print()
 
@@ -51,7 +51,7 @@ print()
 
 
 print("CHECK PATCH REQUEST: /api/modify")
-print(requests.patch("http://localhost:8000/api/reservations/modify", headers=headers,data={'id':'28','startDate':"04/04/2023",'endDate':'06/04/2023','parkingSpot':5}).json())
+print(requests.patch("http://localhost:8000/api/reservations/modify", headers=headers,data={'id':'36','startDate':"04/04/2023",'endDate':'06/04/2023','parkingSpot':5}).json())
 print()
 
 
