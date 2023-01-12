@@ -22,6 +22,7 @@ urlpatterns = [
     path('reservations/delete/<int:reservationId>',views.deleteReservation,name='deleteReservation'),
     path('reservations/modify',views.modifyReservation,name='modifyReservation'),
     path('admin/reservations/modify',views.adminModifyReservation, name='adminModifyReservation'),
+    path('admin/user/suspend',views.suspendUser,name='suspendUser'),
 
     path('spots/',views.getParkingSpots,name='getParkingSpots'),
 

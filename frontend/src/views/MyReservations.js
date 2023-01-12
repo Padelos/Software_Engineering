@@ -19,10 +19,11 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Example from "../components/Example"
 import { useNavigate } from "react-router-dom";
-
+import QRCode from "react-qr-code";
 import { ArrowLeft, ArrowRight } from "react-bootstrap-icons";
-
+import Barcode from 'react-barcode';
 const MyReservations = () => {
+  
   const { user } = useContext(AuthContext);
   const api = useAxios();
   const [data, setData] = useState([]);
@@ -46,6 +47,13 @@ const MyReservations = () => {
 
   const [itemId, setitemId] = useState("1")
   
+  const [detailsReservation,setDetailsReservation] = useState({})
+  const [showDetailsButton, setShowDetailsButton] = useState(false);
+  const handleDetailClose = () => setShowDetailsButton(false);
+  const handleDetailShow = () => setShowDetailsButton(true);
+  
+
+
   const sliceArray = (inputArray,perChunk) =>{
     return inputArray.reduce((resultArray, item, index) => { 
       const chunkIndex = Math.floor(index/perChunk)
@@ -219,6 +227,7 @@ const MyReservations = () => {
             <th>Start Date</th>
             <th>End Date</th>
             <th>Parking Spot</th>
+            <th>Total Cost</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -226,10 +235,11 @@ const MyReservations = () => {
         {Array.from(data[pageIndex]).map((itm, index) => (
           <tr key={index}>
             {itm.expired ? (<>
-              <td align="center" className="text-secondary">Reservation {itm.id}</td>
+              <td align="center" className="text-secondary" style={{ cursor:"pointer"}}><a onClick={() =>{ setDetailsReservation(itm);handleDetailShow()}}>Reservation {itm.id}</a></td>
               <td align="center" className="text-secondary">{itm.reservationDate}</td>
               <td align="center" className="text-secondary"> {itm.endDate}</td>
               <td align="center" className="text-secondary">Parking Spot {itm.parkingSpot.id}</td>
+              <td align="center" className="text-secondary">{itm.totalCost}</td>
               <td align="center" className="text-secondary">
                 <OverlayTrigger
                     key="top3"
@@ -246,10 +256,11 @@ const MyReservations = () => {
             </>):
             
             <>
-            <td align="center">Reservation {itm.id}</td>
+            <td align="center" style={{color:"blue", cursor:"pointer"}}><a onClick={() =>{ setDetailsReservation(itm);handleDetailShow()}}>Reservation {itm.id}</a></td>
             <td align="center">{itm.reservationDate}</td>
             <td align="center"> {itm.endDate}</td>
             <td align="center">Parking Spot {itm.parkingSpot.id}</td>
+            <td align="center" >{itm.totalCost}</td>
             <td align="center">
                     <OverlayTrigger
                         key="top1"
@@ -276,8 +287,37 @@ const MyReservations = () => {
         No reservations present!
         </>)}
         
+      
+      <Modal show={showDetailsButton} onHide={handleDetailClose} animation={true}>
+      <Modal.Header>Reservation {detailsReservation.id}</Modal.Header>
+      <Modal.Body>
+      <div style={{ background: 'white', padding: '16px' }}>
+      <Barcode value={detailsReservation.id} />
+      </div>
+      
 
+      </Modal.Body>
+      <Modal.Footer>
+            
+           <Container>
+            <Row>
+            <Col>
+            </Col>
+                <Col  md="auto"><Button variant="secondary"  onClick={handleDetailClose}>
+            Close
+          </Button>
+          
+          </Col>
+          
 
+            </Row>
+           </Container>
+          
+        </Modal.Footer>
+      </Modal>
+      
+      
+      
       <Modal show={show} onHide={handleClose} animation={false} >
         <Modal.Header>Modify Reservation {reservation.id}</Modal.Header>
         <Modal.Body>

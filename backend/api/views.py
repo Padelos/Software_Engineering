@@ -445,6 +445,17 @@ def removeUserFromGroup(request):
     return JsonResponse({"response":"Removed user from group"})
 
 
+@api_view(['PATCH'])
+@permission_classes([IsAuthenticated,IsAdminUser])
+def suspendUser(request):
+    userId = request.data.get('userId')
+    user = User.objects.get(id=userId)
+
+    user.is_active = False
+    user.save()
+    
+    return JsonResponse({"response":"Removed user from group"})
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated,IsAdminUser])
 def getAllReservations(request):
