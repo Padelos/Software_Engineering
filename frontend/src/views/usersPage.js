@@ -287,7 +287,17 @@ export default function UsersPage(){
                 </Col>
               </Row>
               <hr/>
-              <b>User Groups <a style={{cursor:"pointer"}} onClick={handleGroupShow}> <PlusCircleFill size={20} color="green"></PlusCircleFill> </a></b>
+              <b>User Groups 
+
+                {selectedUser.is_superuser ? <>
+                
+                  <a > <PlusCircleFill size={20} color="gray"></PlusCircleFill> </a>
+                
+                </> : 
+              
+                <><a style={{cursor:"pointer"}} onClick={handleGroupShow}> <PlusCircleFill size={20} color="green"></PlusCircleFill> </a></>}
+
+              </b>
               <Row className="mt-2">
               {selectedUser.groups ?(<>
                 {selectedUser.groups.length > 0 ? (<>
@@ -305,7 +315,14 @@ export default function UsersPage(){
                         return <Dropdown.Item style={{ pointerEvents: 'none' }} key={String(group)+""+index}><b>{permission.content_type.app_label} </b>| {permission.content_type.name}  | {permission.name}</Dropdown.Item>
                       })}
                     </Dropdown.Menu>
-                  </Dropdown></Col><Col className="col-1"> <a style={{cursor:"pointer"}} onClick={() => {handleGroupRemoval(group.id)}}><XCircleFill size={20} color="red" md="auto"></XCircleFill></a></Col></Row></ListGroup.Item>
+                  </Dropdown></Col><Col className="col-1"> 
+                  {selectedUser.is_superuser ? <>
+                    <a disabled><XCircleFill size={20} color="gray" md="auto"></XCircleFill></a>
+                  </>:<>
+                  <a style={{cursor:"pointer"}}  onClick={() => {handleGroupRemoval(group.id)}}><XCircleFill size={20} color="red" md="auto"></XCircleFill></a>
+                  </>}
+                  
+                  </Col></Row></ListGroup.Item>
                   })
                   
                 }
@@ -381,9 +398,7 @@ export default function UsersPage(){
                 <Col  md="auto"><Button variant="secondary"  onClick={handleClose}>
             Cancel
           </Button>
-          <Button style={{marginLeft:10}} disabled={selectedUser.is_superuser}  variant="primary" >
-            Modify
-          </Button>
+          
           </Col>
           
 
