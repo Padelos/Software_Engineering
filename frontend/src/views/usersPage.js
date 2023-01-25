@@ -15,7 +15,7 @@ import Container from 'react-bootstrap/Container';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { PersonFillGear } from "react-bootstrap-icons";
 import Form from 'react-bootstrap/Form';
-
+import { CheckSquare, XSquare } from "react-bootstrap-icons";
 export default function UsersPage(){
     const api = useAxios();
     const [loaded, setLoaded] = useState(false)
@@ -32,6 +32,26 @@ export default function UsersPage(){
     const handleGroupShow = () => setaddGroupShow(true);
     const [buttonDisabled, setButtonDisabled] = useState(true);
     
+
+    const handleUserSuspend = ()=>{
+      var obj = {
+        userId : selectedUser.id
+      }
+      //console.log(selectedUser)
+      const suspendUser = async () =>{
+        try{
+            const response = await api.patch("admin/user/suspend",obj);
+            if(response.status === 200 ){
+              window.location.reload();
+            }
+        }catch(error){
+          console.log(error)
+        }
+      }
+      suspendUser();
+    }
+
+
     const handleGroupRemoval = (gid)=>
     {
       //console.log("REMOVING GROUP " + String(gid) + " FROM USER "+ selectedUser.username)
@@ -111,6 +131,26 @@ export default function UsersPage(){
               const response = await api.get("/users");
               //console.log(response.data.response)
               const result = response.data.response.map( o => { return { id:o.id,username: o.username, first_name: o.first_name, last_name:o.last_name, 
+              
+                isActive:
+                  <div>
+                    {o.is_active ? <>
+                      <Form.Check 
+                      disabled
+                      defaultChecked={true}
+                      type={"checkbox"}
+                      id={`default-"checkbox"`}
+                      style={{color:"blue"}}
+                      />
+                  
+                    </>: <>
+                    <Form.Check 
+                      disabled
+                      type={"checkbox"}
+                      id={`default-"checkbox"`}
+                      />
+                    </>}
+                  </div>,
               action:
               <div>
                 <OverlayTrigger
@@ -125,6 +165,7 @@ export default function UsersPage(){
                 </OverlayTrigger>
                 
                 </div>
+                
             } });
               setusersArray(result)
             } catch(error){
@@ -153,7 +194,10 @@ export default function UsersPage(){
         return (
           <section style={{height:"100vh"}}>
 
-          {usersArray.length > 0 && <PagedTable data={usersArray} sliceSize={15} columns={["ID","Username","First Name","Last Name",'Action']}></PagedTable>}
+        {usersArray.length > 0 && <PagedTable data={usersArray} sliceSize={15} columns={["ID","Username","First Name","Last Name","Is Active",'Action']}></PagedTable>}
+        
+        
+        
         <Modal show={show} onHide={handleClose} animation={true}   size="lg">
         <Modal.Header>Modifying User {selectedUser.username} (UserID :  {selectedUser.id} )</Modal.Header>
         <Modal.Body>
@@ -236,14 +280,24 @@ export default function UsersPage(){
                 {selectedUser.email}
                 </Col>
                 <Col >
-                
+                <b>Is Active</b>
                 </Col>
                 <Col>
-                
+                {selectedUser.is_active ? <><CheckSquare color="green" size={20}/></> : <><XSquare color="red" size={20}/></>}
                 </Col>
               </Row>
               <hr/>
-              <b>User Groups <a style={{cursor:"pointer"}} onClick={handleGroupShow}> <PlusCircleFill size={20} color="green"></PlusCircleFill> </a></b>
+              <b>User Groups 
+
+                {selectedUser.is_superuser ? <>
+                
+                  <a > <PlusCircleFill size={20} color="gray"></PlusCircleFill> </a>
+                
+                </> : 
+              
+                <><a style={{cursor:"pointer"}} onClick={handleGroupShow}> <PlusCircleFill size={20} color="green"></PlusCircleFill> </a></>}
+
+              </b>
               <Row className="mt-2">
               {selectedUser.groups ?(<>
                 {selectedUser.groups.length > 0 ? (<>
@@ -261,7 +315,14 @@ export default function UsersPage(){
                         return <Dropdown.Item style={{ pointerEvents: 'none' }} key={String(group)+""+index}><b>{permission.content_type.app_label} </b>| {permission.content_type.name}  | {permission.name}</Dropdown.Item>
                       })}
                     </Dropdown.Menu>
-                  </Dropdown></Col><Col className="col-1"> <a style={{cursor:"pointer"}} onClick={() => {handleGroupRemoval(group.id)}}><XCircleFill size={20} color="red" md="auto"></XCircleFill></a></Col></Row></ListGroup.Item>
+                  </Dropdown></Col><Col className="col-1"> 
+                  {selectedUser.is_superuser ? <>
+                    <a disabled><XCircleFill size={20} color="gray" md="auto"></XCircleFill></a>
+                  </>:<>
+                  <a style={{cursor:"pointer"}}  onClick={() => {handleGroupRemoval(group.id)}}><XCircleFill size={20} color="red" md="auto"></XCircleFill></a>
+                  </>}
+                  
+                  </Col></Row></ListGroup.Item>
                   })
                   
                 }
@@ -329,7 +390,7 @@ export default function UsersPage(){
             <Row>
             <Col>
             
-            <Button variant="danger" disabled={selectedUser.is_superuser} lg="2" >
+            <Button variant="danger" disabled={selectedUser.is_superuser | !selectedUser.is_active} lg="2" onClick={handleUserSuspend} >
             Suspend
             </Button>
             
@@ -337,9 +398,7 @@ export default function UsersPage(){
                 <Col  md="auto"><Button variant="secondary"  onClick={handleClose}>
             Cancel
           </Button>
-          <Button style={{marginLeft:10}} disabled={selectedUser.is_superuser}  variant="primary" >
-            Modify
-          </Button>
+          
           </Col>
           
 

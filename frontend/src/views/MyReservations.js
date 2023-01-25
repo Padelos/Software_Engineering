@@ -19,10 +19,14 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Example from "../components/Example"
 import { useNavigate } from "react-router-dom";
-
+import QRCode from "react-qr-code";
 import { ArrowLeft, ArrowRight } from "react-bootstrap-icons";
+import Barcode from 'react-barcode';
+import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from "react-datepicker";
 
 const MyReservations = () => {
+  
   const { user } = useContext(AuthContext);
   const api = useAxios();
   const [data, setData] = useState([]);
@@ -46,6 +50,13 @@ const MyReservations = () => {
 
   const [itemId, setitemId] = useState("1")
   
+  const [detailsReservation,setDetailsReservation] = useState({})
+  const [showDetailsButton, setShowDetailsButton] = useState(false);
+  const handleDetailClose = () => setShowDetailsButton(false);
+  const handleDetailShow = () => setShowDetailsButton(true);
+  
+
+
   const sliceArray = (inputArray,perChunk) =>{
     return inputArray.reduce((resultArray, item, index) => { 
       const chunkIndex = Math.floor(index/perChunk)
@@ -200,10 +211,10 @@ const MyReservations = () => {
     
     return (
         
-        <section style={{height:"100vh"}}>
-        {user && <UserInfo user={user} /> }
+        <Container  fluid="md" className="mt-2" style={{height:"100vh"}}>
+        <h1>Welcome to reservations page</h1>
+        Bookings and history<br></br>
         
-        <h1>You are on home page!</h1>
         {data.length > 0 ? (<>
         
           <Button style={{borderRadius: "0px", background:"white",borderColor:"black", marginRight:"5px"}} onClick={handlePageIncrease} className=" float-sm-end "><ArrowRight color="black"></ArrowRight></Button>
@@ -216,9 +227,9 @@ const MyReservations = () => {
         <thead>
           <tr align="center">
             <th >Reservation ID</th>
-            <th>Start Date</th>
-            <th>End Date</th>
+            <th> Dates </th>
             <th>Parking Spot</th>
+            <th>Total Cost</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -226,10 +237,47 @@ const MyReservations = () => {
         {Array.from(data[pageIndex]).map((itm, index) => (
           <tr key={index}>
             {itm.expired ? (<>
-              <td align="center" className="text-secondary">Reservation {itm.id}</td>
-              <td align="center" className="text-secondary">{itm.reservationDate}</td>
-              <td align="center" className="text-secondary"> {itm.endDate}</td>
+              <td align="center" className="text-secondary" style={{ cursor:"pointer"}}><a onClick={() =>{ setDetailsReservation(itm);handleDetailShow()}}>Reservation {itm.id}</a></td>
+              <td align="center" className="text-secondary" > 
+            <Container>
+              <Row>
+                <Col>
+                <DatePicker
+                selected={new Date(itm.reservationDate)}
+                startDate = {new Date(itm.reservationDate)}
+                endDate = {new Date(itm.endDate)}
+                minDate = {new Date(itm.reservationDate)}
+                maxDate = {new Date(itm.endDate)}
+              />
+                </Col>
+                <Col md={1}>
+                    -
+                </Col>
+                    <Col>
+                    <DatePicker
+                selected={new Date(itm.endDate)}
+               
+                
+                startDate={new Date(itm.reservationDate)}
+                endDate={new Date(itm.endDate)}
+                minDate={new Date(itm.reservationDate)}
+
+                maxDate = {new Date(itm.endDate)}
+
+              />
+                    </Col>
+                    
+              </Row>
+            </Container>
+           
+              
+              
+              </td>
+
+         
+              
               <td align="center" className="text-secondary">Parking Spot {itm.parkingSpot.id}</td>
+              <td align="center" className="text-secondary">{itm.totalCost}</td>
               <td align="center" className="text-secondary">
                 <OverlayTrigger
                     key="top3"
@@ -246,10 +294,44 @@ const MyReservations = () => {
             </>):
             
             <>
-            <td align="center">Reservation {itm.id}</td>
-            <td align="center">{itm.reservationDate}</td>
-            <td align="center"> {itm.endDate}</td>
+            <td align="center" style={{color:"blue", cursor:"pointer"}}><a onClick={() =>{ setDetailsReservation(itm);handleDetailShow()}}>Reservation {itm.id}</a></td>
+            <td align="center"> 
+            <Container>
+              <Row>
+                <Col>
+                <DatePicker
+                selected={new Date(itm.reservationDate)}
+                startDate = {new Date(itm.reservationDate)}
+                endDate = {new Date(itm.endDate)}
+                minDate = {new Date(itm.reservationDate)}
+                maxDate = {new Date(itm.endDate)}
+              />
+                </Col>
+                <Col md={1}>
+                    -
+                </Col>
+                    <Col>
+                    <DatePicker
+                selected={new Date(itm.endDate)}
+               
+                
+                startDate={new Date(itm.reservationDate)}
+                endDate={new Date(itm.endDate)}
+                minDate={new Date(itm.reservationDate)}
+
+                maxDate = {new Date(itm.endDate)}
+
+              />
+                    </Col>
+                    
+              </Row>
+            </Container>
+           
+              
+              
+              </td>
             <td align="center">Parking Spot {itm.parkingSpot.id}</td>
+            <td align="center" >{itm.totalCost}</td>
             <td align="center">
                     <OverlayTrigger
                         key="top1"
@@ -259,7 +341,7 @@ const MyReservations = () => {
                         Modify
                         </Tooltip>
                         }>
-                        <a className="link-success" onClick={() =>{ setReservation(itm);handleShow()}}><PencilSquare size={20}/> </a>
+                        <a className="link-success" style={{cursor:"pointer"}}  onClick={() =>{ setReservation(itm);handleShow()}}><PencilSquare size={20}/> </a>
                     </OverlayTrigger>
 
             </td>
@@ -276,8 +358,50 @@ const MyReservations = () => {
         No reservations present!
         </>)}
         
+      
+      <Modal show={showDetailsButton} onHide={handleDetailClose} animation={true} size="md"> 
+      <Modal.Header>Reservation {detailsReservation.id}</Modal.Header>
+      <Modal.Body>
+      <div style={{ background: 'white', padding: '16px' }}>
+        <Container>
+  
+          <Row>
+            <Col>
+        
+            </Col>
+            <Col>
+            <Barcode value={String(detailsReservation.id)} />
+            </Col>
+            <Col>
+            </Col>
+          </Row>
+        </Container>
+      
+      </div>
+      
 
+      </Modal.Body>
+      <Modal.Footer>
+            
+           <Container>
+            <Row>
+            <Col>
+            </Col>
+                <Col  md="auto"><Button variant="secondary"  onClick={handleDetailClose}>
+            Close
+          </Button>
+          
+          </Col>
+          
 
+            </Row>
+           </Container>
+          
+        </Modal.Footer>
+      </Modal>
+      
+      
+      
       <Modal show={show} onHide={handleClose} animation={false} >
         <Modal.Header>Modify Reservation {reservation.id}</Modal.Header>
         <Modal.Body>
@@ -330,7 +454,7 @@ const MyReservations = () => {
           
         </Modal.Footer>
       </Modal>
-      </section>
+      </Container>
         
       );
   }
